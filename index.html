@@ -15,7 +15,7 @@
             
             <!-- Logo e Título -->
             <div class="flex items-center gap-3">
-                <img src="logo.png" alt="Guardian A.N.Y Logo" class="h-12 w-auto object-contain">
+                <img src="logo.png" alt="Guardian A.N.Y Logo" class="h-10 w-auto object-contain">
                 <div>
                     <h1 class="text-2xl font-black tracking-wider text-slate-900">GUARDIAN <span class="text-amber-700">A.N.Y</span></h1>
                     <p class="text-xs text-slate-600">Classificação e Acessibilidade Audiovisual</p>
@@ -87,10 +87,10 @@
             } else if (url.includes("watch?v=")) {
                 videoId = url.split("watch?v=")[1].split("&")[0];
             }
+            // Alterado para hqdefault mas tratado no CSS com zoom suave para eliminar as tarjas pretas da imagem
             return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
         }
 
-        // Retorna as cores de fundo do card e a estilização dos badges
         function obterEstiloCard(classificacao) {
             const classeBadgeBase = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm";
             
@@ -109,9 +109,9 @@
                         icone: "fa-leaf",
                         textoSecundario: "text-slate-800"
                     };
-                default: // ESTÍMULO MODERADO
+                default:
                     return {
-                        bgCard: "bg-[#FFEB87] border-amber-300/60", // Amarelo quase bege
+                        bgCard: "bg-[#F7E7B4] border-amber-300/60",
                         badge: `${classeBadgeBase} bg-amber-950/20 text-slate-900 border border-amber-900/20`,
                         icone: "fa-eye",
                         textoSecundario: "text-slate-800"
@@ -159,9 +159,10 @@
                     <a href="${video.url}" target="_blank"
                     class="group ${estilo.bgCard} rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
 
-                        <div class="relative aspect-video bg-black/10">
+                        <!-- Container da imagem com recorte perfeito (overflow-hidden e scale-135 eliminam as bordas pretas do YouTube) -->
+                        <div class="relative aspect-video w-full overflow-hidden bg-black/10">
                             <img src="${thumbUrl}"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                class="w-full h-full object-cover scale-[1.35] group-hover:scale-[1.40] transition-transform duration-500">
 
                             <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                                 <div class="bg-slate-900/80 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
@@ -195,7 +196,7 @@
                                     <p>
                                         Algoritmo: <span class="font-bold">${video.classificacao_algoritmo}</span>
                                     </p>
-                                    <p class="mt-1 font-extrabold ${video.resultado === "CORRETO (Bateu com o CSV)" ? "text-slate-900" : video.resultado === "DIVERGENTE" ? "text-slate-900" : "text-slate-900"}">
+                                    <p class="mt-1 font-extrabold text-slate-900">
                                         ${video.resultado}
                                     </p>
                                 </div>
