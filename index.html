@@ -7,8 +7,12 @@
     
     <link rel="icon" type="image/png" href="logo.png">
 
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos Personalizados -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-[#FBF0C9] text-slate-800 min-h-screen flex flex-col justify-between">
 
@@ -40,6 +44,24 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow w-full">
+        
+        <!-- Formulário para Analisar Novo Vídeo -->
+        <div class="mb-8 bg-white/80 rounded-xl p-6 border border-amber-200 shadow-sm">
+            <h2 class="text-lg font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> Analisar Novo Vídeo com IA
+            </h2>
+            <form id="formAnalise" class="flex flex-col sm:flex-row gap-3">
+                <input type="url" id="inputUrl" placeholder="Cole aqui a URL do vídeo do YouTube (ex: https://www.youtube.com/watch?v=...)" 
+                       required class="flex-grow bg-white text-sm text-slate-800 px-4 py-3 rounded-lg border border-amber-200 focus:outline-none focus:border-amber-500 shadow-inner">
+                <button type="submit" id="btnAnalisar" class="bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Analisar Vídeo</span>
+                </button>
+            </form>
+            <!-- Mensagem de Status/Loading -->
+            <div id="statusAnalise" class="hidden mt-3 text-sm flex items-center gap-2 font-medium"></div>
+        </div>
+
         <!-- Dashboard / Métricas -->
         <div class="mb-8 bg-white/70 rounded-xl p-6 border border-amber-200 shadow-sm flex flex-wrap justify-around text-center gap-4">
             <div>
@@ -79,145 +101,7 @@
         </div>
     </footer>
    
-    <script>
-        function obterThumbnailYoutube(url) {
-            let videoId = "";
-            if (url.includes("youtu.be/")) {
-                videoId = url.split("youtu.be/")[1].split("?")[0];
-            } else if (url.includes("watch?v=")) {
-                videoId = url.split("watch?v=")[1].split("&")[0];
-            }
-            return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
-        }
-
-        function obterEstiloCard(classificacao) {
-            const classeBadgeBase = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm";
-            
-            switch((classificacao || "").toUpperCase()) {
-                case "HIPERESTIMULANTE":
-                    return {
-                        bgCard: "bg-[#FB8A57] border-red-300/60",
-                        badge: `${classeBadgeBase} bg-red-950/20 text-slate-900 border border-red-900/20`,
-                        icone: "fa-bolt"
-                    };
-                case "BAIXO ESTÍMULO":
-                    return {
-                        bgCard: "bg-[#7ACE9A] border-emerald-300/60",
-                        badge: `${classeBadgeBase} bg-emerald-950/20 text-slate-900 border border-emerald-900/20`,
-                        icone: "fa-leaf"
-                    };
-                default:
-                    return {
-                        bgCard: "bg-[#FFEB87] border-amber-300/60",
-                        badge: `${classeBadgeBase} bg-amber-950/20 text-slate-900 border border-amber-900/20`,
-                        icone: "fa-eye"
-                    };
-            }
-        }
-
-        const videoGrid = document.getElementById("videoGrid");
-        const emptyState = document.getElementById("emptyState");
-        const searchBar = document.getElementById("searchBar");
-        const filterSelect = document.getElementById("filterSelect");
-        let datasetVideos = [];
-
-        async function carregarVideos() {
-            try {
-                const resposta = await fetch("dataset_front.json");
-                datasetVideos = await resposta.json();
-
-                atualizarDashboard(datasetVideos);
-                renderizarGrid(datasetVideos);
-            } catch (erro) {
-                console.error("Erro ao carregar dataset:", erro);
-            }
-        }
-
-        function renderizarGrid(videos) {
-            videoGrid.innerHTML = "";
-            
-            if(videos.length === 0) {
-                emptyState.classList.remove("hidden");
-                return;
-            }
-            emptyState.classList.add("hidden");
-
-            videos.forEach(video => {
-                const thumbUrl = obterThumbnailYoutube(video.url);
-                const estilo = obterEstiloCard(video.classificacao);
-
-                const cardHTML = `
-                    <a href="${video.url}" target="_blank"
-                    class="group ${estilo.bgCard} rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
-
-                        <div class="relative aspect-video w-full overflow-hidden bg-black/10">
-                            <img src="${thumbUrl}"
-                                class="w-full h-full object-cover scale-[1.35] group-hover:scale-[1.40] transition-transform duration-500">
-
-                            <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <div class="bg-slate-900/80 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
-                                    <i class="fa-solid fa-play text-white ml-1"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-4 flex flex-col gap-3 flex-grow justify-between">
-
-                            <h3 class="text-sm font-bold text-slate-900 line-clamp-2 leading-snug">
-                                ${video.titulo}
-                            </h3>
-
-                            <div>
-                                <p class="text-[12px] text-slate-700 font-semibold mb-1 uppercase tracking-wider">
-                                    Classificação
-                                </p>
-
-                                <span class="${estilo.badge}">
-                                    <i class="fa-solid ${estilo.icone}"></i>
-                                    ${video.classificacao}
-                                </span>
-                            </div>
-
-                        </div>
-
-                    </a>
-                    `;
-                videoGrid.insertAdjacentHTML("beforeend", cardHTML);
-            });
-        }
-
-        function atualizarDashboard(videos){
-            document.getElementById("totalCount").innerText = videos.length;
-
-            document.getElementById("hiperCount").innerText =
-                videos.filter(v => (v.classificacao || "").toUpperCase() === "HIPERESTIMULANTE").length;
-
-            document.getElementById("moderadoCount").innerText =
-                videos.filter(v => (v.classificacao || "").toUpperCase() === "ESTÍMULO MODERADO").length;
-
-            document.getElementById("baixoCount").innerText =
-                videos.filter(v => (v.classificacao || "").toUpperCase() === "BAIXO ESTÍMULO").length;
-        }
-
-        function filtrarVideos() {
-            const termoBusca = searchBar.value.toLowerCase();
-            const filtroSelecionado = filterSelect.value;
-
-            const videosFiltrados = datasetVideos.filter(video => {
-                const bateBusca = video.titulo.toLowerCase().includes(termoBusca);
-                const bateFiltro =
-                    filtroSelecionado === "todos" ||
-                    (video.classificacao || "").toUpperCase() === filtroSelecionado.toUpperCase();
-                return bateBusca && bateFiltro;
-            });
-
-            renderizarGrid(videosFiltrados);
-        }
-
-        searchBar.addEventListener("input", filtrarVideos);
-        filterSelect.addEventListener("change", filtrarVideos);
-
-        carregarVideos();
-    </script>
+    <!-- Arquivo JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
