@@ -13,7 +13,6 @@
     <header class="bg-white/80 backdrop-blur-md border-b border-amber-200/60 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             
-            <!-- Logo e Título -->
             <div class="flex items-center gap-3">
                 <img src="logo.png" alt="Guardian A.N.Y Logo" class="h-10 w-auto object-contain">
                 <div>
@@ -22,7 +21,6 @@
                 </div>
             </div>
             
-            <!-- Controles de busca e filtro -->
             <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
                 <div class="relative w-full sm:w-64">
                     <input type="text" id="searchBar" placeholder="Buscar vídeo..." class="w-full bg-white/90 text-sm text-slate-800 pl-10 pr-4 py-2 rounded-lg border border-amber-200 focus:outline-none focus:border-amber-500 transition-colors">
@@ -66,7 +64,6 @@
         <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         </div>
 
-        <!-- Estado Vazio -->
         <div id="emptyState" class="hidden text-center py-16">
             <i class="fa-regular fa-folder-open text-slate-400 text-5xl mb-3"></i>
             <p class="text-slate-600">Nenhum vídeo encontrado para os filtros selecionados.</p>
@@ -87,34 +84,30 @@
             } else if (url.includes("watch?v=")) {
                 videoId = url.split("watch?v=")[1].split("&")[0];
             }
-            // Alterado para hqdefault mas tratado no CSS com zoom suave para eliminar as tarjas pretas da imagem
             return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
         }
 
         function obterEstiloCard(classificacao) {
             const classeBadgeBase = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm";
             
-            switch(classificacao.toUpperCase()) {
+            switch((classificacao || "").toUpperCase()) {
                 case "HIPERESTIMULANTE":
                     return {
                         bgCard: "bg-[#FB8A57] border-red-300/60",
                         badge: `${classeBadgeBase} bg-red-950/20 text-slate-900 border border-red-900/20`,
-                        icone: "fa-bolt",
-                        textoSecundario: "text-slate-800"
+                        icone: "fa-bolt"
                     };
                 case "BAIXO ESTÍMULO":
                     return {
                         bgCard: "bg-[#7ACE9A] border-emerald-300/60",
                         badge: `${classeBadgeBase} bg-emerald-950/20 text-slate-900 border border-emerald-900/20`,
-                        icone: "fa-leaf",
-                        textoSecundario: "text-slate-800"
+                        icone: "fa-leaf"
                     };
                 default:
                     return {
                         bgCard: "bg-[#F7E7B4] border-amber-300/60",
                         badge: `${classeBadgeBase} bg-amber-950/20 text-slate-900 border border-amber-900/20`,
-                        icone: "fa-eye",
-                        textoSecundario: "text-slate-800"
+                        icone: "fa-eye"
                     };
             }
         }
@@ -148,18 +141,12 @@
 
             videos.forEach(video => {
                 const thumbUrl = obterThumbnailYoutube(video.url);
-                const classificacao =
-                    video.classificacao_algoritmo !== "ERRO NO DOWNLOAD"
-                        ? video.classificacao_algoritmo
-                        : video.classificacao_csv;
-
-                const estilo = obterEstiloCard(classificacao);
+                const estilo = obterEstiloCard(video.classificacao);
 
                 const cardHTML = `
                     <a href="${video.url}" target="_blank"
                     class="group ${estilo.bgCard} rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
 
-                        <!-- Container da imagem com recorte perfeito (overflow-hidden e scale-135 eliminam as bordas pretas do YouTube) -->
                         <div class="relative aspect-video w-full overflow-hidden bg-black/10">
                             <img src="${thumbUrl}"
                                 class="w-full h-full object-cover scale-[1.35] group-hover:scale-[1.40] transition-transform duration-500">
@@ -177,29 +164,15 @@
                                 ${video.titulo}
                             </h3>
 
-                            <div class="flex flex-col gap-2">
-                                <div>
-                                    <p class="text-[11px] text-slate-700 font-semibold mb-1 uppercase tracking-wider">
-                                        Resultado da análise
-                                    </p>
+                            <div>
+                                <p class="text-[11px] text-slate-700 font-semibold mb-1 uppercase tracking-wider">
+                                    Classificação
+                                </p>
 
-                                    <span class="${estilo.badge}">
-                                        <i class="fa-solid ${estilo.icone}"></i>
-                                        ${classificacao}
-                                    </span>
-                                </div>
-
-                                <div class="text-xs text-slate-800 pt-2 border-t border-black/10 space-y-0.5">
-                                    <p>
-                                        CSV: <span class="font-bold">${video.classificacao_csv}</span>
-                                    </p>
-                                    <p>
-                                        Algoritmo: <span class="font-bold">${video.classificacao_algoritmo}</span>
-                                    </p>
-                                    <p class="mt-1 font-extrabold text-slate-900">
-                                        ${video.resultado}
-                                    </p>
-                                </div>
+                                <span class="${estilo.badge}">
+                                    <i class="fa-solid ${estilo.icone}"></i>
+                                    ${video.classificacao}
+                                </span>
                             </div>
 
                         </div>
@@ -213,20 +186,14 @@
         function atualizarDashboard(videos){
             document.getElementById("totalCount").innerText = videos.length;
 
-            const classificacoes = videos.map(v =>
-                v.classificacao_algoritmo !== "ERRO NO DOWNLOAD"
-                    ? v.classificacao_algoritmo
-                    : v.classificacao_csv
-            );
-
             document.getElementById("hiperCount").innerText =
-                classificacoes.filter(c => c === "HIPERESTIMULANTE").length;
+                videos.filter(v => (v.classificacao || "").toUpperCase() === "HIPERESTIMULANTE").length;
 
             document.getElementById("moderadoCount").innerText =
-                classificacoes.filter(c => c === "ESTÍMULO MODERADO").length;
+                videos.filter(v => (v.classificacao || "").toUpperCase() === "ESTÍMULO MODERADO").length;
 
             document.getElementById("baixoCount").innerText =
-                classificacoes.filter(c => c === "BAIXO ESTÍMULO").length;
+                videos.filter(v => (v.classificacao || "").toUpperCase() === "BAIXO ESTÍMULO").length;
         }
 
         function filtrarVideos() {
@@ -235,14 +202,9 @@
 
             const videosFiltrados = datasetVideos.filter(video => {
                 const bateBusca = video.titulo.toLowerCase().includes(termoBusca);
-                const classificacao =
-                    video.classificacao_algoritmo !== "ERRO NO DOWNLOAD"
-                        ? video.classificacao_algoritmo
-                        : video.classificacao_csv;
-
                 const bateFiltro =
                     filtroSelecionado === "todos" ||
-                    classificacao.toUpperCase() === filtroSelecionado.toUpperCase();
+                    (video.classificacao || "").toUpperCase() === filtroSelecionado.toUpperCase();
                 return bateBusca && bateFiltro;
             });
 
