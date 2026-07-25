@@ -15,10 +15,8 @@
             
             <!-- Logo e Título -->
             <div class="flex items-center gap-3">
-                <!-- Imagem PNG do Logo (substitua 'logo.png' pelo caminho/nome do seu arquivo) -->
-                <div>
-                    <img src="logo.png" alt="Guardian A.N.Y Logo" >
-                </div>
+                <!-- Imagem PNG diretamente sem container com fundo -->
+                <img src="logo.png" alt="Guardian A.N.Y Logo" class="h-10 w-auto object-contain">
                 <div>
                     <h1 class="text-2xl font-black tracking-wider text-slate-900">GUARDIAN <span class="text-indigo-600">A.N.Y</span></h1>
                     <p class="text-xs text-slate-500">Classificação e Acessibilidade Audiovisual</p>
@@ -83,7 +81,6 @@
     </footer>
    
     <script>
-        // Função auxiliar para extrair o ID do YouTube e gerar a URL da capa (Thumbnail)
         function obterThumbnailYoutube(url) {
             let videoId = "";
             if (url.includes("youtu.be/")) {
@@ -94,7 +91,6 @@
             return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
         }
 
-        // Função para estilizar os Badges dinamicamente baseado na classificação (versão clara)
         function obterEstiloBadge(classificacao) {
             const classeBase = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm";
             switch(classificacao.toUpperCase()) {
@@ -125,7 +121,6 @@
             }
         }
 
-        // Função Principal de Renderização
         function renderizarGrid(videos) {
             videoGrid.innerHTML = "";
             
@@ -198,7 +193,6 @@
             });
         }
 
-        // Atualiza os contadores do mini dashboard
         function atualizarDashboard(videos){
             document.getElementById("totalCount").innerText = videos.length;
 
@@ -218,7 +212,6 @@
                 classificacoes.filter(c => c === "BAIXO ESTÍMULO").length;
         }
 
-        // Filtragem e Busca em tempo real
         function filtrarVideos() {
             const termoBusca = searchBar.value.toLowerCase();
             const filtroSelecionado = filterSelect.value;
@@ -242,7 +235,6 @@
         searchBar.addEventListener("input", filtrarVideos);
         filterSelect.addEventListener("change", filtrarVideos);
 
-        // Inicialização da Página
         carregarVideos();
     </script>
 </body>
