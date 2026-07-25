@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/analisar";
+const API_URL = "https://guardian-a-n-y-backend.onrender.com/analisar";;
 
 // Seletores do DOM
 const videoGrid = document.getElementById("videoGrid");
