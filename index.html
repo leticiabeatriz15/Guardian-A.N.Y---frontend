@@ -7,29 +7,28 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-[#FBF0C9] text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <!-- Header claro -->
-    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-50">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-amber-200/60 shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             
             <!-- Logo e Título -->
             <div class="flex items-center gap-3">
-                <!-- Imagem PNG diretamente sem container com fundo -->
                 <img src="logo.png" alt="Guardian A.N.Y Logo" class="h-10 w-auto object-contain">
                 <div>
-                    <h1 class="text-2xl font-black tracking-wider text-slate-900">GUARDIAN <span class="text-indigo-600">A.N.Y</span></h1>
-                    <p class="text-xs text-slate-500">Classificação e Acessibilidade Audiovisual</p>
+                    <h1 class="text-2xl font-black tracking-wider text-slate-900">GUARDIAN <span class="text-amber-700">A.N.Y</span></h1>
+                    <p class="text-xs text-slate-600">Classificação e Acessibilidade Audiovisual</p>
                 </div>
             </div>
             
             <!-- Controles de busca e filtro -->
             <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
                 <div class="relative w-full sm:w-64">
-                    <input type="text" id="searchBar" placeholder="Buscar vídeo..." class="w-full bg-slate-100 text-sm text-slate-800 pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-500 focus:bg-white transition-colors">
+                    <input type="text" id="searchBar" placeholder="Buscar vídeo..." class="w-full bg-white/90 text-sm text-slate-800 pl-10 pr-4 py-2 rounded-lg border border-amber-200 focus:outline-none focus:border-amber-500 transition-colors">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
                 </div>
-                <select id="filterSelect" class="bg-slate-100 text-sm text-slate-700 px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-indigo-500 focus:bg-white transition-colors cursor-pointer w-full sm:w-auto">
+                <select id="filterSelect" class="bg-white/90 text-sm text-slate-700 px-3 py-2 rounded-lg border border-amber-200 focus:outline-none focus:border-amber-500 transition-colors cursor-pointer w-full sm:w-auto">
                     <option value="todos">Todos os Estímulos</option>
                     <option value="HIPERESTIMULANTE">Hiperestimulante</option>
                     <option value="ESTÍMULO MODERADO">Estímulo Moderado</option>
@@ -41,25 +40,25 @@
 
     <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 flex-grow w-full">
         <!-- Dashboard / Métricas -->
-        <div class="mb-8 bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex flex-wrap justify-around text-center gap-4">
+        <div class="mb-8 bg-white/70 rounded-xl p-6 border border-amber-200 shadow-sm flex flex-wrap justify-around text-center gap-4">
             <div>
-                <p class="text-slate-500 text-sm font-medium">Total Analisado</p>
+                <p class="text-slate-600 text-sm font-medium">Total Analisado</p>
                 <p id="totalCount" class="text-2xl font-bold text-slate-800">0</p>
             </div>
-            <div class="border-r border-slate-200 hidden md:block"></div>
+            <div class="border-r border-amber-200 hidden md:block"></div>
             <div>
-                <p class="text-red-500 text-sm font-medium">Hiperestimulantes</p>
-                <p id="hiperCount" class="text-2xl font-bold text-red-600">0</p>
+                <p class="text-[#d35400] text-sm font-medium">Hiperestimulantes</p>
+                <p id="hiperCount" class="text-2xl font-bold text-[#d35400]">0</p>
             </div>
-            <div class="border-r border-slate-200 hidden md:block"></div>
+            <div class="border-r border-amber-200 hidden md:block"></div>
             <div>
-                <p class="text-amber-500 text-sm font-medium">Estímulo Moderado</p>
-                <p id="moderadoCount" class="text-2xl font-bold text-amber-600">0</p>
+                <p class="text-amber-700 text-sm font-medium">Estímulo Moderado</p>
+                <p id="moderadoCount" class="text-2xl font-bold text-amber-700">0</p>
             </div>
-            <div class="border-r border-slate-200 hidden md:block"></div>
+            <div class="border-r border-amber-200 hidden md:block"></div>
             <div>
-                <p class="text-emerald-500 text-sm font-medium">Baixo Estímulo</p>
-                <p id="baixoCount" class="text-2xl font-bold text-emerald-600">0</p>
+                <p class="text-emerald-700 text-sm font-medium">Baixo Estímulo</p>
+                <p id="baixoCount" class="text-2xl font-bold text-emerald-700">0</p>
             </div>
         </div>
 
@@ -69,13 +68,13 @@
 
         <!-- Estado Vazio -->
         <div id="emptyState" class="hidden text-center py-16">
-            <i class="fa-regular fa-folder-open text-slate-300 text-5xl mb-3"></i>
-            <p class="text-slate-500">Nenhum vídeo encontrado para os filtros selecionados.</p>
+            <i class="fa-regular fa-folder-open text-slate-400 text-5xl mb-3"></i>
+            <p class="text-slate-600">Nenhum vídeo encontrado para os filtros selecionados.</p>
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-4 mt-12">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+    <footer class="bg-white/60 border-t border-amber-200/60 py-4 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-600">
             &copy; 2026 Guardian A.N.Y. Todos os direitos reservados.
         </div>
     </footer>
@@ -91,15 +90,32 @@
             return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=500';
         }
 
-        function obterEstiloBadge(classificacao) {
-            const classeBase = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm";
+        // Retorna as cores de fundo do card e a estilização dos badges
+        function obterEstiloCard(classificacao) {
+            const classeBadgeBase = "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm";
+            
             switch(classificacao.toUpperCase()) {
                 case "HIPERESTIMULANTE":
-                    return { classe: `${classeBase} bg-red-100 text-red-700 border border-red-200`, icone: "fa-bolt" };
+                    return {
+                        bgCard: "bg-[#FB8A57] border-red-300/60",
+                        badge: `${classeBadgeBase} bg-red-950/20 text-slate-900 border border-red-900/20`,
+                        icone: "fa-bolt",
+                        textoSecundario: "text-slate-800"
+                    };
                 case "BAIXO ESTÍMULO":
-                    return { classe: `${classeBase} bg-emerald-100 text-emerald-700 border border-emerald-200`, icone: "fa-leaf" };
-                default:
-                    return { classe: `${classeBase} bg-amber-100 text-amber-700 border border-amber-200`, icone: "fa-eye" };
+                    return {
+                        bgCard: "bg-[#7ACE9A] border-emerald-300/60",
+                        badge: `${classeBadgeBase} bg-emerald-950/20 text-slate-900 border border-emerald-900/20`,
+                        icone: "fa-leaf",
+                        textoSecundario: "text-slate-800"
+                    };
+                default: // ESTÍMULO MODERADO
+                    return {
+                        bgCard: "bg-[#F7E7B4] border-amber-300/60", // Amarelo quase bege
+                        badge: `${classeBadgeBase} bg-amber-950/20 text-slate-900 border border-amber-900/20`,
+                        icone: "fa-eye",
+                        textoSecundario: "text-slate-800"
+                    };
             }
         }
 
@@ -137,18 +153,18 @@
                         ? video.classificacao_algoritmo
                         : video.classificacao_csv;
 
-                const badgeInfo = obterEstiloBadge(classificacao);
+                const estilo = obterEstiloCard(classificacao);
 
                 const cardHTML = `
                     <a href="${video.url}" target="_blank"
-                    class="group bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-indigo-400 shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
+                    class="group ${estilo.bgCard} rounded-xl overflow-hidden border shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
 
-                        <div class="relative aspect-video bg-slate-100">
+                        <div class="relative aspect-video bg-black/10">
                             <img src="${thumbUrl}"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
 
-                            <div class="absolute inset-0 bg-slate-900/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                                <div class="bg-indigo-600 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+                            <div class="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <div class="bg-slate-900/80 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
                                     <i class="fa-solid fa-play text-white ml-1"></i>
                                 </div>
                             </div>
@@ -156,30 +172,30 @@
 
                         <div class="p-4 flex flex-col gap-3 flex-grow justify-between">
 
-                            <h3 class="text-sm font-semibold text-slate-800 line-clamp-2 leading-snug">
+                            <h3 class="text-sm font-bold text-slate-900 line-clamp-2 leading-snug">
                                 ${video.titulo}
                             </h3>
 
                             <div class="flex flex-col gap-2">
                                 <div>
-                                    <p class="text-[11px] text-slate-400 font-medium mb-1 uppercase tracking-wider">
+                                    <p class="text-[11px] text-slate-700 font-semibold mb-1 uppercase tracking-wider">
                                         Resultado da análise
                                     </p>
 
-                                    <span class="${badgeInfo.classe}">
-                                        <i class="fa-solid ${badgeInfo.icone}"></i>
+                                    <span class="${estilo.badge}">
+                                        <i class="fa-solid ${estilo.icone}"></i>
                                         ${classificacao}
                                     </span>
                                 </div>
 
-                                <div class="text-xs text-slate-500 pt-2 border-t border-slate-100 space-y-0.5">
+                                <div class="text-xs text-slate-800 pt-2 border-t border-black/10 space-y-0.5">
                                     <p>
-                                        CSV: <span class="font-medium text-slate-700">${video.classificacao_csv}</span>
+                                        CSV: <span class="font-bold">${video.classificacao_csv}</span>
                                     </p>
                                     <p>
-                                        Algoritmo: <span class="font-medium text-slate-700">${video.classificacao_algoritmo}</span>
+                                        Algoritmo: <span class="font-bold">${video.classificacao_algoritmo}</span>
                                     </p>
-                                    <p class="mt-1 font-semibold ${video.resultado === "CORRETO (Bateu com o CSV)" ? "text-emerald-600" : video.resultado === "DIVERGENTE" ? "text-amber-600" : "text-red-600"}">
+                                    <p class="mt-1 font-extrabold ${video.resultado === "CORRETO (Bateu com o CSV)" ? "text-slate-900" : video.resultado === "DIVERGENTE" ? "text-slate-900" : "text-slate-900"}">
                                         ${video.resultado}
                                     </p>
                                 </div>
